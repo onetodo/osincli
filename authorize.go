@@ -24,6 +24,10 @@ type AuthorizeRequest struct {
 type AuthorizeData struct {
 	Code  string
 	State string
+
+	// Resource Owner Password Credentials
+	Username string
+	Password string
 }
 
 // Creates a new authorize request
@@ -49,6 +53,12 @@ func (c *AuthorizeRequest) GetAuthorizeUrlWithParams(state string) *url.URL {
 	uq.Add("redirect_uri", c.client.config.RedirectUrl)
 	if c.client.config.Scope != "" {
 		uq.Add("scope", c.client.config.Scope)
+	}
+	if c.client.config.CodeChallenge != "" {
+		uq.Add("code_challenge", c.client.config.CodeChallenge)
+	}
+	if c.client.config.CodeChallengeMethod != "" {
+		uq.Add("code_challenge_method", c.client.config.CodeChallengeMethod)
 	}
 	if state != "" {
 		uq.Add("state", state)
